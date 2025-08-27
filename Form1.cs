@@ -99,7 +99,7 @@ namespace ProjetoWagner3BIM
             cbbox_tipo_aplicacao.Items.Add("Contorno");
             cbbox_tipo_aplicacao.Items.Add("Preenchimento");
 
-            cbbox_onde_aplicar.Items.Add("Hexágono");
+            cbbox_onde_aplicar.Items.Add("Icosaedro");
             cbbox_onde_aplicar.Items.Add("Triângulo Meio");
             cbbox_onde_aplicar.Items.Add("Triângulo Meio-Esquerda");
             cbbox_onde_aplicar.Items.Add("Triângulo Meio-Direita");
