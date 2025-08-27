@@ -6,9 +6,6 @@ namespace ProjetoWagner3BIM
 {
     public partial class Form1 : Form
     {
-        //int[] xs = { 667, 771, 771, 667, 563, 563 };
-        //int[] ys = { 226, 286, 406, 466, 406, 286 };
-        //int[] centro = { 667, 346 };
 
         bool translationX = false;
         bool translationY = false;
@@ -20,6 +17,7 @@ namespace ProjetoWagner3BIM
 
         int[] hx0 = { 667, 771, 771, 667, 563, 563 };
         int[] hy0 = { 226, 286, 406, 466, 406, 286 };
+        Color[] hcolor = { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) };
 
         int[][] xs0 = new int[][]
         {
@@ -52,17 +50,71 @@ namespace ProjetoWagner3BIM
 
         };
 
-        int txState = 0, tyState = 0;   // os mesmos inteiros que seus métodos usam
+        Color[][] tcolor = new Color[][]
+        {
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo meio
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo meio-esquerda
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo meio-direita
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo topo
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo baixo-esquerda
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo baixo-direita
+
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo meio-esquerda-esquerda
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo meio-direita-direita
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }, // triangulo topo-esquerda-esquerda
+            new[] { Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255) }  // triangulo topo-direita-direita
+        };
+
+        int txState = 667, tyState = 346;
         int angState = 0;               // graus
-        int sxState = 1, syState = 1;   // fatores inteiros (igual sua escala)
+        int sxState = 1, syState = 1;
 
         // BUFFERS DO ESTADO (pontos prontos para desenhar)
         int[] hxState, hyState;
         int[][] xsState, ysState;
 
+
         public Form1()
         {
             InitializeComponent();
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            RecalcularEstado();
+            IniciarComboBox();
+        }
+
+        void IniciarComboBox()
+        {
+            cbbox_cor.Items.Add("Preto");
+            cbbox_cor.Items.Add("Vermelho");
+            cbbox_cor.Items.Add("Laranja");
+            cbbox_cor.Items.Add("Amarelo");
+            cbbox_cor.Items.Add("Verde");
+            cbbox_cor.Items.Add("Azul");
+            cbbox_cor.Items.Add("Anil");
+            cbbox_cor.Items.Add("Violeta");
+            cbbox_cor.Items.Add("Branco");
+
+            cbbox_tipo_aplicacao.Items.Add("Contorno");
+            cbbox_tipo_aplicacao.Items.Add("Preenchimento");
+
+            cbbox_onde_aplicar.Items.Add("Hexágono");
+            cbbox_onde_aplicar.Items.Add("Triângulo Meio");
+            cbbox_onde_aplicar.Items.Add("Triângulo Meio-Esquerda");
+            cbbox_onde_aplicar.Items.Add("Triângulo Meio-Direita");
+            cbbox_onde_aplicar.Items.Add("Triângulo Topo");
+            cbbox_onde_aplicar.Items.Add("Triângulo Baixo-Esquerda");
+            cbbox_onde_aplicar.Items.Add("Triângulo Baixo-Direita");
+            cbbox_onde_aplicar.Items.Add("Triângulo Meio-Esquerda-Esquerda");
+            cbbox_onde_aplicar.Items.Add("Triângulo Meio-Direita-Direita");
+            cbbox_onde_aplicar.Items.Add("Triângulo Topo-Esquerda-Esquerda");
+            cbbox_onde_aplicar.Items.Add("Triângulo Topo-Direita-Direita");
+
+            cbbox_cor.SelectedIndex = 0;
+            cbbox_tipo_aplicacao.SelectedIndex = 0;
+            cbbox_onde_aplicar.SelectedIndex = 0;
+
         }
 
         Color Cor_primitiva(int red = 0, int green = 0, int blue = 0)
@@ -225,42 +277,42 @@ namespace ProjetoWagner3BIM
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            using var pen = caneta_estilo(2, Color.Black);
+            using var pen = caneta_estilo(2, hcolor[0]);
 
             if (translationX)
             {
-                translacaoX(e, hxState, hyState, Color.Transparent, pen, panel1.Width / 2);
+                translacaoX(e, hxState, hyState, hcolor[1], pen, panel1.Width / 2);
                 for (int i = 0; i < xsState.Length; i++)
-                    translacaoX(e, xsState[i], ysState[i], Color.Transparent, pen, panel1.Width / 2);
+                    translacaoX(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), panel1.Width / 2);
                 translationX = false;
             }
             else if (translationY)
             {
-                translacaoY(e, hxState, hyState, Color.Transparent, pen, panel1.Height / 2);
+                translacaoY(e, hxState, hyState, hcolor[1], pen, panel1.Height / 2);
                 for (int i = 0; i < xsState.Length; i++)
-                    translacaoY(e, xsState[i], ysState[i], Color.Transparent, pen, panel1.Height / 2);
+                    translacaoY(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), panel1.Height / 2);
                 translationY = false;
             }
             else if (rotation)
             {
-                rotacao(e, hxState, hyState, Color.Transparent, pen, 0);
+                rotacao(e, hxState, hyState, hcolor[1], pen, 0);
                 for (int i = 0; i < xsState.Length; i++)
-                    rotacao(e, xsState[i], ysState[i], Color.Transparent, pen, 0);
+                    rotacao(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), 0);
                 rotation = false;
             }
             else if (scale)
             {
-                escala(e, hxState, hyState, Color.Transparent, pen, 1, 1);
+                escala(e, hxState, hyState, hcolor[1], pen, 1, 1);
                 for (int i = 0; i < xsState.Length; i++)
-                    escala(e, xsState[i], ysState[i], Color.Transparent, pen, 1, 1);
+                    escala(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), 1, 1);
                 scale = false;
             }
             else
             {
                 // Sem flag: escolha qualquer identidade (ex.: rotacao 0)
-                rotacao(e, hxState, hyState, Color.Transparent, pen, 0);
+                rotacao(e, hxState, hyState, hcolor[1], pen, 0);
                 for (int i = 0; i < xsState.Length; i++)
-                    rotacao(e, xsState[i], ysState[i], Color.Transparent, pen, 0);
+                    rotacao(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), 0);
             }
         }
 
@@ -378,10 +430,63 @@ namespace ProjetoWagner3BIM
             }
         }
 
-
-        private void Form1_Load(object sender, EventArgs e)
+        private void btnColorir_Click(object sender, EventArgs e)
         {
-            RecalcularEstado();
+            if(cbbox_tipo_aplicacao.SelectedIndex == 0)
+            {
+                int index = cbbox_onde_aplicar.SelectedIndex;
+                Color cor = getColor();
+                if (index == 0)
+                {
+                    for (int i = 0; i < tcolor.Length; i++) tcolor[i][0] = cor;
+                }
+                else
+                {
+                    tcolor[index - 1][0] = cor;
+                }
+                panel1.Invalidate();
+            }
+            else if(cbbox_tipo_aplicacao.SelectedIndex == 1)
+            {
+                int index = cbbox_onde_aplicar.SelectedIndex;
+                Color cor = getColor();
+                if (index == 0)
+                {
+                    for (int i = 0; i < tcolor.Length; i++) tcolor[i][1] = cor;
+                }
+                else
+                {
+                    tcolor[index - 1][1] = cor;
+                }
+                panel1.Invalidate();
+            }
+        }
+
+        Color getColor()
+        {
+            switch (cbbox_cor.SelectedIndex)
+            {
+                case 0:
+                    return Cor_primitiva(0, 0, 0);
+                case 1:
+                    return Cor_primitiva(255, 0, 0);
+                case 2:
+                    return Cor_primitiva(255, 127, 0);
+                case 3:
+                    return Cor_primitiva(255, 255, 0);
+                case 4:
+                    return Cor_primitiva(0, 255, 0);
+                case 5:
+                    return Cor_primitiva(0, 0, 255);
+                case 6:
+                    return Cor_primitiva(75, 0, 130);
+                case 7:
+                    return Cor_primitiva(148, 0, 211);
+                case 8:
+                    return Cor_primitiva(255, 255, 255);
+                default:
+                    return Cor_primitiva(0, 0, 0);
+            }
         }
     }
 }

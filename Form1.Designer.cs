@@ -37,6 +37,13 @@
             trackBarRotacao = new TrackBar();
             label4 = new Label();
             trackBarEscala = new TrackBar();
+            label5 = new Label();
+            cbbox_cor = new ComboBox();
+            label6 = new Label();
+            cbbox_tipo_aplicacao = new ComboBox();
+            label7 = new Label();
+            cbbox_onde_aplicar = new ComboBox();
+            btnColorir = new Button();
             ((System.ComponentModel.ISupportInitialize)trackBarY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarX).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarRotacao).BeginInit();
@@ -132,11 +139,88 @@
             trackBarEscala.Value = 1;
             trackBarEscala.ValueChanged += trackBarEscala_ValueChanged;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(12, 842);
+            label5.Name = "label5";
+            label5.Size = new Size(50, 30);
+            label5.TabIndex = 9;
+            label5.Text = "Cor:";
+            // 
+            // cbbox_cor
+            // 
+            cbbox_cor.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbox_cor.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cbbox_cor.FormattingEnabled = true;
+            cbbox_cor.Location = new Point(12, 875);
+            cbbox_cor.Name = "cbbox_cor";
+            cbbox_cor.Size = new Size(330, 38);
+            cbbox_cor.TabIndex = 10;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(391, 842);
+            label6.Name = "label6";
+            label6.Size = new Size(183, 30);
+            label6.TabIndex = 11;
+            label6.Text = "Tipo de Aplicação:";
+            // 
+            // cbbox_tipo_aplicacao
+            // 
+            cbbox_tipo_aplicacao.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbox_tipo_aplicacao.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cbbox_tipo_aplicacao.FormattingEnabled = true;
+            cbbox_tipo_aplicacao.Location = new Point(391, 875);
+            cbbox_tipo_aplicacao.Name = "cbbox_tipo_aplicacao";
+            cbbox_tipo_aplicacao.Size = new Size(350, 38);
+            cbbox_tipo_aplicacao.TabIndex = 12;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.Location = new Point(809, 842);
+            label7.Name = "label7";
+            label7.Size = new Size(139, 30);
+            label7.TabIndex = 13;
+            label7.Text = "Onde Aplicar:";
+            // 
+            // cbbox_onde_aplicar
+            // 
+            cbbox_onde_aplicar.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbox_onde_aplicar.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cbbox_onde_aplicar.FormattingEnabled = true;
+            cbbox_onde_aplicar.Location = new Point(809, 875);
+            cbbox_onde_aplicar.Name = "cbbox_onde_aplicar";
+            cbbox_onde_aplicar.Size = new Size(312, 38);
+            cbbox_onde_aplicar.TabIndex = 14;
+            // 
+            // btnColorir
+            // 
+            btnColorir.Location = new Point(12, 919);
+            btnColorir.Name = "btnColorir";
+            btnColorir.Size = new Size(75, 23);
+            btnColorir.TabIndex = 15;
+            btnColorir.Text = "Colorir";
+            btnColorir.UseVisualStyleBackColor = true;
+            btnColorir.Click += btnColorir_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1358, 845);
+            ClientSize = new Size(1358, 1009);
+            Controls.Add(btnColorir);
+            Controls.Add(cbbox_onde_aplicar);
+            Controls.Add(label7);
+            Controls.Add(cbbox_tipo_aplicacao);
+            Controls.Add(label6);
+            Controls.Add(cbbox_cor);
+            Controls.Add(label5);
             Controls.Add(trackBarEscala);
             Controls.Add(label4);
             Controls.Add(trackBarRotacao);
@@ -168,5 +252,12 @@
         private TrackBar trackBarRotacao;
         private Label label4;
         private TrackBar trackBarEscala;
+        private Label label5;
+        private ComboBox cbbox_cor;
+        private Label label6;
+        private ComboBox cbbox_tipo_aplicacao;
+        private Label label7;
+        private ComboBox cbbox_onde_aplicar;
+        private Button btnColorir;
     }
 }
