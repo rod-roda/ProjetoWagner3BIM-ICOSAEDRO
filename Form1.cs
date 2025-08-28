@@ -73,15 +73,20 @@ namespace ProjetoWagner3BIM
         int[] hxState, hyState;
         int[][] xsState, ysState;
 
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
 
         public Form1()
         {
             InitializeComponent();
+            timer.Interval = 500; // 1 segundo
+            timer.Tick += Timer_Tick;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             RecalcularEstado();
             IniciarComboBox();
+            timer.Enabled = false;
         }
 
         void IniciarComboBox()
@@ -432,7 +437,7 @@ namespace ProjetoWagner3BIM
 
         private void btnColorir_Click(object sender, EventArgs e)
         {
-            if(cbbox_tipo_aplicacao.SelectedIndex == 0)
+            if (cbbox_tipo_aplicacao.SelectedIndex == 0)
             {
                 int index = cbbox_onde_aplicar.SelectedIndex;
                 Color cor = getColor();
@@ -446,7 +451,7 @@ namespace ProjetoWagner3BIM
                 }
                 panel1.Invalidate();
             }
-            else if(cbbox_tipo_aplicacao.SelectedIndex == 1)
+            else if (cbbox_tipo_aplicacao.SelectedIndex == 1)
             {
                 int index = cbbox_onde_aplicar.SelectedIndex;
                 Color cor = getColor();
@@ -487,6 +492,99 @@ namespace ProjetoWagner3BIM
                 default:
                     return Cor_primitiva(0, 0, 0);
             }
+        }
+
+        Color getColor(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return Cor_primitiva(0, 0, 0);
+                case 1:
+                    return Cor_primitiva(255, 0, 0);
+                case 2:
+                    return Cor_primitiva(255, 127, 0);
+                case 3:
+                    return Cor_primitiva(255, 255, 0);
+                case 4:
+                    return Cor_primitiva(0, 255, 0);
+                case 5:
+                    return Cor_primitiva(0, 0, 255);
+                case 6:
+                    return Cor_primitiva(75, 0, 130);
+                case 7:
+                    return Cor_primitiva(148, 0, 211);
+                case 8:
+                    return Cor_primitiva(255, 255, 255);
+                default:
+                    return Cor_primitiva(0, 0, 0);
+            }
+        }
+
+        private void btnAleatorio_Click(object sender, EventArgs e)
+        {
+            Random random = new Random();
+            if (cbbox_tipo_aplicacao.SelectedIndex == 0)
+            {
+                for (int i = 0; i < tcolor.Length; i++)
+                {
+                    int randomIndex = random.Next(0, 9);
+                    Color cor = getColor(randomIndex);
+                    tcolor[i][0] = cor;
+                }
+
+                panel1.Invalidate();
+            }
+            else if (cbbox_tipo_aplicacao.SelectedIndex == 1)
+            {
+                int index = cbbox_onde_aplicar.SelectedIndex;
+                if (index == 0)
+                {
+                    for (int i = 0; i < tcolor.Length; i++)
+                    {
+                        int randomIndex = random.Next(0, 9);
+                        Color cor = getColor(randomIndex);
+                        tcolor[i][1] = cor;
+                    }
+                }
+                else
+                {
+                    int randomIndex = random.Next(0, 9);
+                    Color cor = getColor(randomIndex);
+                    tcolor[index - 1][1] = cor;
+                }
+                panel1.Invalidate();
+            }
+        }
+
+        private void btnRedefinir_Click(object sender, EventArgs e)
+        {
+            cbbox_cor.SelectedIndex = 0;
+            cbbox_tipo_aplicacao.SelectedIndex = 0;
+            cbbox_onde_aplicar.SelectedIndex = 0;
+            trackBarX.Value = 667;
+            trackBarY.Value = 346;
+            trackBarRotacao.Value = 0;
+            trackBarEscala.Value = 1;
+            for (int i = 0; i < tcolor.Length; i++)
+            {
+                tcolor[i][0] = Color.FromArgb(0, 0, 0);
+                tcolor[i][1] = Color.FromArgb(255, 255, 255);
+            }
+            panel1.Invalidate();
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            angState = (angState + 10) % 360;
+            trackBarRotacao.Value = angState;
+            rotation = true;
+            RecalcularEstado();
+            panel1.Invalidate();
+        }
+
+        private void btnRotacionar_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = !timer.Enabled;
         }
     }
 }

@@ -44,6 +44,9 @@
             label7 = new Label();
             cbbox_onde_aplicar = new ComboBox();
             btnColorir = new Button();
+            btnAleatorio = new Button();
+            btnRedefinir = new Button();
+            btnRotacionar = new Button();
             ((System.ComponentModel.ISupportInitialize)trackBarY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarX).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarRotacao).BeginInit();
@@ -209,11 +212,46 @@
             btnColorir.UseVisualStyleBackColor = true;
             btnColorir.Click += btnColorir_Click;
             // 
+            // btnAleatorio
+            // 
+            btnAleatorio.Location = new Point(93, 919);
+            btnAleatorio.Name = "btnAleatorio";
+            btnAleatorio.Size = new Size(75, 23);
+            btnAleatorio.TabIndex = 16;
+            btnAleatorio.Text = "Aleatorizar";
+            btnAleatorio.UseVisualStyleBackColor = true;
+            btnAleatorio.Click += btnAleatorio_Click;
+            // 
+            // btnRedefinir
+            // 
+            btnRedefinir.Font = new Font("Segoe UI", 16F);
+            btnRedefinir.Location = new Point(1145, 875);
+            btnRedefinir.Name = "btnRedefinir";
+            btnRedefinir.Size = new Size(138, 42);
+            btnRedefinir.TabIndex = 17;
+            btnRedefinir.Text = "Redefinir";
+            btnRedefinir.UseVisualStyleBackColor = true;
+            btnRedefinir.Click += btnRedefinir_Click;
+            // 
+            // btnRotacionar
+            // 
+            btnRotacionar.Font = new Font("Segoe UI", 12F);
+            btnRotacionar.Location = new Point(857, 737);
+            btnRotacionar.Name = "btnRotacionar";
+            btnRotacionar.Size = new Size(177, 39);
+            btnRotacionar.TabIndex = 18;
+            btnRotacionar.Text = "Rotação Automática";
+            btnRotacionar.UseVisualStyleBackColor = true;
+            btnRotacionar.Click += btnRotacionar_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1358, 1009);
+            Controls.Add(btnRotacionar);
+            Controls.Add(btnRedefinir);
+            Controls.Add(btnAleatorio);
             Controls.Add(btnColorir);
             Controls.Add(cbbox_onde_aplicar);
             Controls.Add(label7);
@@ -259,5 +297,8 @@
         private Label label7;
         private ComboBox cbbox_onde_aplicar;
         private Button btnColorir;
+        private Button btnAleatorio;
+        private Button btnRedefinir;
+        private Button btnRotacionar;
     }
 }
