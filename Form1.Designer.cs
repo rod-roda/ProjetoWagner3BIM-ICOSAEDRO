@@ -47,6 +47,7 @@
             btnAleatorio = new Button();
             btnRedefinir = new Button();
             btnRotacionar = new Button();
+            checkBoxRotacaoTransposta = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)trackBarY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarX).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarRotacao).BeginInit();
@@ -235,20 +236,32 @@
             // 
             // btnRotacionar
             // 
-            btnRotacionar.Font = new Font("Segoe UI", 12F);
-            btnRotacionar.Location = new Point(857, 737);
+            btnRotacionar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnRotacionar.Location = new Point(857, 720);
             btnRotacionar.Name = "btnRotacionar";
-            btnRotacionar.Size = new Size(177, 39);
+            btnRotacionar.Size = new Size(142, 30);
             btnRotacionar.TabIndex = 18;
             btnRotacionar.Text = "Rotação Automática";
             btnRotacionar.UseVisualStyleBackColor = true;
             btnRotacionar.Click += btnRotacionar_Click;
+            // 
+            // checkBoxRotacaoTransposta
+            // 
+            checkBoxRotacaoTransposta.AutoSize = true;
+            checkBoxRotacaoTransposta.Location = new Point(870, 756);
+            checkBoxRotacaoTransposta.Name = "checkBoxRotacaoTransposta";
+            checkBoxRotacaoTransposta.Size = new Size(129, 19);
+            checkBoxRotacaoTransposta.TabIndex = 19;
+            checkBoxRotacaoTransposta.Text = "Rotação Transposta";
+            checkBoxRotacaoTransposta.UseVisualStyleBackColor = true;
+            checkBoxRotacaoTransposta.CheckedChanged += checkBoxRotacaoTransposta_CheckedChanged;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1358, 1009);
+            Controls.Add(checkBoxRotacaoTransposta);
             Controls.Add(btnRotacionar);
             Controls.Add(btnRedefinir);
             Controls.Add(btnAleatorio);
@@ -300,5 +313,6 @@
         private Button btnAleatorio;
         private Button btnRedefinir;
         private Button btnRotacionar;
+        private CheckBox checkBoxRotacaoTransposta;
     }
 }

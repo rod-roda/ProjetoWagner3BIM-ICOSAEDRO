@@ -415,7 +415,7 @@ namespace ProjetoWagner3BIM
             // 2) ESCALA em torno de (xOrigem, yOrigem)
             (xH, yH) = CalcEscala(xH, yH, sxState, syState);
 
-            // 3) TRANSLADA (usa seus mesmos cálculos com panel.Width/Height)
+            // 3) TRANSLAÇÃO
             (xH, yH) = CalcTranslacaoX(xH, yH, txState);
             (xH, yH) = CalcTranslacaoY(xH, yH, tyState);
 
@@ -585,6 +585,11 @@ namespace ProjetoWagner3BIM
         private void btnRotacionar_Click(object sender, EventArgs e)
         {
             timer.Enabled = !timer.Enabled;
+        }
+
+        private void checkBoxRotacaoTransposta_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
