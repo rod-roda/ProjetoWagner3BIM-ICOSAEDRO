@@ -1,6 +1,15 @@
 ﻿using System.Drawing.Drawing2D;
 using System.Runtime.ConstrainedExecution;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
 
 namespace ProjetoWagner3BIM
 {

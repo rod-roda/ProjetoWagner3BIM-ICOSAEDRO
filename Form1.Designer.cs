@@ -1,4 +1,7 @@
-﻿namespace ProjetoWagner3BIM
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace ProjetoWagner3BIM
 {
     partial class Form1
     {
