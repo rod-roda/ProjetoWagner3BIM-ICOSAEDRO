@@ -56,29 +56,31 @@
             // 
             // panel1
             // 
+            panel1.BackColor = SystemColors.ButtonFace;
             panel1.Location = new Point(12, 12);
             panel1.Name = "panel1";
             panel1.Size = new Size(1334, 692);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
+            panel1.MouseDoubleClick += panel1_MouseDoubleClick;
             // 
             // trackBarY
             // 
-            trackBarY.Location = new Point(151, 788);
+            trackBarY.Location = new Point(1361, 173);
             trackBarY.Maximum = 692;
             trackBarY.Minimum = 1;
             trackBarY.Name = "trackBarY";
-            trackBarY.Size = new Size(273, 45);
+            trackBarY.Size = new Size(418, 45);
             trackBarY.TabIndex = 1;
             trackBarY.Value = 346;
             trackBarY.ValueChanged += trackBarY_ValueChanged;
             // 
             // trackBarX
             // 
-            trackBarX.Location = new Point(151, 737);
+            trackBarX.Location = new Point(1361, 92);
             trackBarX.Maximum = 1334;
             trackBarX.Name = "trackBarX";
-            trackBarX.Size = new Size(273, 45);
+            trackBarX.Size = new Size(418, 45);
             trackBarX.TabIndex = 2;
             trackBarX.Value = 667;
             trackBarX.ValueChanged += trackBarX_ValueChanged;
@@ -87,7 +89,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(12, 737);
+            label1.Location = new Point(1361, 50);
             label1.Name = "label1";
             label1.Size = new Size(133, 30);
             label1.TabIndex = 3;
@@ -97,7 +99,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(12, 788);
+            label2.Location = new Point(1361, 140);
             label2.Name = "label2";
             label2.Size = new Size(133, 30);
             label2.TabIndex = 4;
@@ -107,7 +109,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(479, 737);
+            label3.Location = new Point(1361, 221);
             label3.Name = "label3";
             label3.Size = new Size(93, 30);
             label3.TabIndex = 5;
@@ -115,10 +117,10 @@
             // 
             // trackBarRotacao
             // 
-            trackBarRotacao.Location = new Point(578, 737);
+            trackBarRotacao.Location = new Point(1361, 254);
             trackBarRotacao.Maximum = 360;
             trackBarRotacao.Name = "trackBarRotacao";
-            trackBarRotacao.Size = new Size(273, 45);
+            trackBarRotacao.Size = new Size(418, 45);
             trackBarRotacao.TabIndex = 6;
             trackBarRotacao.ValueChanged += trackBarRotacao_ValueChanged;
             // 
@@ -126,7 +128,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(479, 788);
+            label4.Location = new Point(1361, 366);
             label4.Name = "label4";
             label4.Size = new Size(75, 30);
             label4.TabIndex = 7;
@@ -134,11 +136,11 @@
             // 
             // trackBarEscala
             // 
-            trackBarEscala.Location = new Point(578, 788);
+            trackBarEscala.Location = new Point(1361, 399);
             trackBarEscala.Maximum = 5;
             trackBarEscala.Minimum = 1;
             trackBarEscala.Name = "trackBarEscala";
-            trackBarEscala.Size = new Size(273, 45);
+            trackBarEscala.Size = new Size(418, 45);
             trackBarEscala.TabIndex = 8;
             trackBarEscala.Value = 1;
             trackBarEscala.ValueChanged += trackBarEscala_ValueChanged;
@@ -147,7 +149,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(12, 842);
+            label5.Location = new Point(17, 725);
             label5.Name = "label5";
             label5.Size = new Size(50, 30);
             label5.TabIndex = 9;
@@ -158,7 +160,7 @@
             cbbox_cor.DropDownStyle = ComboBoxStyle.DropDownList;
             cbbox_cor.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbbox_cor.FormattingEnabled = true;
-            cbbox_cor.Location = new Point(12, 875);
+            cbbox_cor.Location = new Point(17, 758);
             cbbox_cor.Name = "cbbox_cor";
             cbbox_cor.Size = new Size(330, 38);
             cbbox_cor.TabIndex = 10;
@@ -167,7 +169,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(391, 842);
+            label6.Location = new Point(396, 725);
             label6.Name = "label6";
             label6.Size = new Size(183, 30);
             label6.TabIndex = 11;
@@ -178,7 +180,7 @@
             cbbox_tipo_aplicacao.DropDownStyle = ComboBoxStyle.DropDownList;
             cbbox_tipo_aplicacao.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbbox_tipo_aplicacao.FormattingEnabled = true;
-            cbbox_tipo_aplicacao.Location = new Point(391, 875);
+            cbbox_tipo_aplicacao.Location = new Point(396, 758);
             cbbox_tipo_aplicacao.Name = "cbbox_tipo_aplicacao";
             cbbox_tipo_aplicacao.Size = new Size(350, 38);
             cbbox_tipo_aplicacao.TabIndex = 12;
@@ -187,7 +189,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label7.Location = new Point(809, 842);
+            label7.Location = new Point(814, 725);
             label7.Name = "label7";
             label7.Size = new Size(139, 30);
             label7.TabIndex = 13;
@@ -198,14 +200,14 @@
             cbbox_onde_aplicar.DropDownStyle = ComboBoxStyle.DropDownList;
             cbbox_onde_aplicar.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbbox_onde_aplicar.FormattingEnabled = true;
-            cbbox_onde_aplicar.Location = new Point(809, 875);
+            cbbox_onde_aplicar.Location = new Point(814, 758);
             cbbox_onde_aplicar.Name = "cbbox_onde_aplicar";
             cbbox_onde_aplicar.Size = new Size(312, 38);
             cbbox_onde_aplicar.TabIndex = 14;
             // 
             // btnColorir
             // 
-            btnColorir.Location = new Point(12, 919);
+            btnColorir.Location = new Point(17, 802);
             btnColorir.Name = "btnColorir";
             btnColorir.Size = new Size(75, 23);
             btnColorir.TabIndex = 15;
@@ -215,7 +217,7 @@
             // 
             // btnAleatorio
             // 
-            btnAleatorio.Location = new Point(93, 919);
+            btnAleatorio.Location = new Point(98, 802);
             btnAleatorio.Name = "btnAleatorio";
             btnAleatorio.Size = new Size(75, 23);
             btnAleatorio.TabIndex = 16;
@@ -226,7 +228,7 @@
             // btnRedefinir
             // 
             btnRedefinir.Font = new Font("Segoe UI", 16F);
-            btnRedefinir.Location = new Point(1145, 875);
+            btnRedefinir.Location = new Point(1150, 758);
             btnRedefinir.Name = "btnRedefinir";
             btnRedefinir.Size = new Size(138, 42);
             btnRedefinir.TabIndex = 17;
@@ -236,10 +238,10 @@
             // 
             // btnRotacionar
             // 
-            btnRotacionar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnRotacionar.Location = new Point(857, 720);
+            btnRotacionar.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnRotacionar.Location = new Point(1361, 305);
             btnRotacionar.Name = "btnRotacionar";
-            btnRotacionar.Size = new Size(142, 30);
+            btnRotacionar.Size = new Size(182, 30);
             btnRotacionar.TabIndex = 18;
             btnRotacionar.Text = "Rotação Automática";
             btnRotacionar.UseVisualStyleBackColor = true;
@@ -248,9 +250,10 @@
             // checkBoxRotacaoTransposta
             // 
             checkBoxRotacaoTransposta.AutoSize = true;
-            checkBoxRotacaoTransposta.Location = new Point(870, 756);
+            checkBoxRotacaoTransposta.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            checkBoxRotacaoTransposta.Location = new Point(1586, 305);
             checkBoxRotacaoTransposta.Name = "checkBoxRotacaoTransposta";
-            checkBoxRotacaoTransposta.Size = new Size(129, 19);
+            checkBoxRotacaoTransposta.Size = new Size(193, 29);
             checkBoxRotacaoTransposta.TabIndex = 19;
             checkBoxRotacaoTransposta.Text = "Rotação Transposta";
             checkBoxRotacaoTransposta.UseVisualStyleBackColor = true;
@@ -260,7 +263,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1358, 1009);
+            BackColor = SystemColors.ControlLight;
+            ClientSize = new Size(1793, 837);
             Controls.Add(checkBoxRotacaoTransposta);
             Controls.Add(btnRotacionar);
             Controls.Add(btnRedefinir);

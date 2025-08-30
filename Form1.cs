@@ -7,11 +7,6 @@ namespace ProjetoWagner3BIM
     public partial class Form1 : Form
     {
 
-        bool translationX = false;
-        bool translationY = false;
-        bool rotation = false;
-        bool scale = false;
-
         int xOrigem = 667;
         int yOrigem = 346;
 
@@ -66,7 +61,7 @@ namespace ProjetoWagner3BIM
         };
 
         int txState = 667, tyState = 346;
-        int angState = 0;               // graus
+        int angState = 0;               // graus ou passos (0..3) se modo 90°
         int sxState = 1, syState = 1;
 
         // BUFFERS DO ESTADO (pontos prontos para desenhar)
@@ -81,6 +76,8 @@ namespace ProjetoWagner3BIM
             InitializeComponent();
             timer.Interval = 500; // 1 segundo
             timer.Tick += Timer_Tick;
+
+            checkBoxRotacaoTransposta.Checked = true;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -205,143 +202,32 @@ namespace ProjetoWagner3BIM
 
         }
 
-        public void translacaoX(PaintEventArgs e, int[] x, int[] y, Color cor, Pen corlinha, int tx)
-        {
-            tx = tx - panel1.Width / 2;
-            int[] novoX = new int[x.Length];
-
-            for (int c = 0; c < x.Length; c++)
-            {
-                novoX[c] = x[c] + tx;
-            }
-
-            desenhaPoligono(e, novoX, y, cor, corlinha);
-            translationX = false;
-        }
-
-        public void translacaoY(PaintEventArgs e, int[] x, int[] y, Color cor, Pen corlinha, int ty)
-        {
-            ty = ty - panel1.Height / 2;
-            int[] novoY = new int[y.Length];
-
-            for (int c = 0; c < x.Length; c++)
-            {
-                novoY[c] = y[c] + (ty * -1);
-            }
-
-            desenhaPoligono(e, x, novoY, cor, corlinha);
-            translationY = false;
-        }
-
-        public void rotacao(PaintEventArgs e, int[] x, int[] y, Color cor, Pen corlinha, int angulo)
-        {
-            int n = x.Length;
-            int[] novoX = new int[n];
-            int[] novoY = new int[n];
-
-            double t = angulo * Math.PI / 180.0;
-            double cos = Math.Cos(t);
-            double sin = Math.Sin(t);
-
-            for (int i = 0; i < n; i++)
-            {
-                double dx = x[i] - xOrigem;
-                double dy = y[i] - yOrigem;
-
-                double xr = dx * cos - dy * sin;
-                double yr = dx * sin + dy * cos;
-
-                novoX[i] = (int)Math.Round(xOrigem + xr);
-                novoY[i] = (int)Math.Round(yOrigem + yr);
-            }
-
-            desenhaPoligono(e, novoX, novoY, cor, corlinha);
-            rotation = false;
-        }
-
-        public void escala(PaintEventArgs e, int[] x, int[] y, Color cor, Pen corlinha, int escalaX, int escalaY)
-        {
-            int[] novoX = new int[x.Length];
-            int[] novoY = new int[y.Length];
-
-            for (int c = 0; c < x.Length; c++)
-            {
-                double dx = x[c] - xOrigem;
-                double dy = y[c] - yOrigem;
-
-                double xs = dx * escalaX;
-                double ys = dy * escalaY;
-
-                novoX[c] = (int)(xOrigem + xs);
-                novoY[c] = (int)(yOrigem + ys);
-            }
-
-            desenhaPoligono(e, novoX, novoY, cor, corlinha);
-            scale = false;
-        }
-
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             using var pen = caneta_estilo(2, hcolor[0]);
 
-            if (translationX)
-            {
-                translacaoX(e, hxState, hyState, hcolor[1], pen, panel1.Width / 2);
-                for (int i = 0; i < xsState.Length; i++)
-                    translacaoX(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), panel1.Width / 2);
-                translationX = false;
-            }
-            else if (translationY)
-            {
-                translacaoY(e, hxState, hyState, hcolor[1], pen, panel1.Height / 2);
-                for (int i = 0; i < xsState.Length; i++)
-                    translacaoY(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), panel1.Height / 2);
-                translationY = false;
-            }
-            else if (rotation)
-            {
-                rotacao(e, hxState, hyState, hcolor[1], pen, 0);
-                for (int i = 0; i < xsState.Length; i++)
-                    rotacao(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), 0);
-                rotation = false;
-            }
-            else if (scale)
-            {
-                escala(e, hxState, hyState, hcolor[1], pen, 1, 1);
-                for (int i = 0; i < xsState.Length; i++)
-                    escala(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), 1, 1);
-                scale = false;
-            }
-            else
-            {
-                // Sem flag: escolha qualquer identidade (ex.: rotacao 0)
-                rotacao(e, hxState, hyState, hcolor[1], pen, 0);
-                for (int i = 0; i < xsState.Length; i++)
-                    rotacao(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]), 0);
-            }
+            RecalcularEstado();
+
+            desenhaPoligono(e, hxState, hyState, hcolor[1], pen);
+            for (int i = 0; i < xsState.Length; i++)
+                desenhaPoligono(e, xsState[i], ysState[i], tcolor[i][1], caneta_estilo(2, tcolor[i][0]));
         }
 
         private void trackBarX_ValueChanged(object sender, EventArgs e)
         {
             txState = trackBarX.Value;
-            translationX = true;
-            RecalcularEstado();
             panel1.Invalidate();
         }
 
         private void trackBarY_ValueChanged(object sender, EventArgs e)
         {
             tyState = trackBarY.Value;
-            translationY = true;
-            RecalcularEstado();
             panel1.Invalidate();
         }
 
         private void trackBarRotacao_ValueChanged(object sender, EventArgs e)
         {
             angState = trackBarRotacao.Value;
-            rotation = true;
-            RecalcularEstado();
             panel1.Invalidate();
         }
 
@@ -349,12 +235,10 @@ namespace ProjetoWagner3BIM
         {
             sxState = Math.Max(1, trackBarEscala.Value);
             syState = sxState;
-            scale = true;
-            RecalcularEstado();
             panel1.Invalidate();
         }
 
-        private (int[] nx, int[] ny) CalcTranslacaoX(int[] x, int[] y, int tx)
+        private (int[] nx, int[] ny) translacaoX(int[] x, int[] y, int tx)
         {
             int txEff = tx - panel1.Width / 2;
             int[] nx = new int[x.Length];
@@ -362,7 +246,7 @@ namespace ProjetoWagner3BIM
             return (nx, (int[])y.Clone());
         }
 
-        private (int[] nx, int[] ny) CalcTranslacaoY(int[] x, int[] y, int ty)
+        private (int[] nx, int[] ny) translacaoY(int[] x, int[] y, int ty)
         {
             int tyEff = ty - panel1.Height / 2;
             int[] ny = new int[y.Length];
@@ -370,7 +254,7 @@ namespace ProjetoWagner3BIM
             return ((int[])x.Clone(), ny);
         }
 
-        private (int[] nx, int[] ny) CalcRotacao(int[] x, int[] y, int angulo)
+        private (int[] nx, int[] ny) rotacao(int[] x, int[] y, int angulo)
         {
             int n = x.Length;
             int[] nx = new int[n], ny = new int[n];
@@ -389,7 +273,70 @@ namespace ProjetoWagner3BIM
             return (nx, ny);
         }
 
-        private (int[] nx, int[] ny) CalcEscala(int[] x, int[] y, int escalaX, int escalaY)
+        private (int[] nx, int[] ny) rotacaoTransposicaoMatriz(int[] x, int[] y, int passos)
+        {
+            passos = ((passos % 4) + 4) % 4;
+
+            if (passos == 0) return ((int[])x.Clone(), (int[])y.Clone());
+
+            int[] coordX = new int[x.Length];
+            int[] coordY = new int[y.Length];
+
+            for (int i = 0; i < x.Length; i++)
+            {
+                coordX[i] = x[i] - xOrigem;
+                coordY[i] = y[i] - yOrigem;
+            }
+
+            int[,] matrizCoordenadas = new int[2, x.Length];
+            for (int i = 0; i < x.Length; i++)
+            {
+                matrizCoordenadas[0, i] = coordX[i];
+                matrizCoordenadas[1, i] = coordY[i];
+            }
+
+            for (int passo = 0; passo < passos; passo++)
+            {
+                matrizCoordenadas = AplicarRotacao90Transposta(matrizCoordenadas);
+            }
+
+            int[] resultX = new int[x.Length];
+            int[] resultY = new int[y.Length];
+
+            for (int i = 0; i < x.Length; i++)
+            {
+                resultX[i] = matrizCoordenadas[0, i] + xOrigem;
+                resultY[i] = matrizCoordenadas[1, i] + yOrigem;
+            }
+
+            return (resultX, resultY);
+        }
+
+        private int[,] AplicarRotacao90Transposta(int[,] matriz)
+        {
+            int linhas = matriz.GetLength(0);
+            int colunas = matriz.GetLength(1);
+
+            int[,] matrizTransposta = new int[colunas, linhas];
+            for (int i = 0; i < linhas; i++)
+            {
+                for (int j = 0; j < colunas; j++)
+                {
+                    matrizTransposta[j, i] = matriz[i, j];
+                }
+            }
+
+            int[,] matrizRotacionada = new int[linhas, colunas];
+            for (int j = 0; j < colunas; j++)
+            {
+                matrizRotacionada[0, j] = -matrizTransposta[j, 1];
+                matrizRotacionada[1, j] = matrizTransposta[j, 0];
+            }
+
+            return matrizRotacionada;
+        }
+
+        private (int[] nx, int[] ny) escala(int[] x, int[] y, int escalaX, int escalaY)
         {
             int[] nx = new int[x.Length], ny = new int[y.Length];
             for (int i = 0; i < x.Length; i++)
@@ -406,31 +353,33 @@ namespace ProjetoWagner3BIM
 
         private void RecalcularEstado()
         {
-            // Hexágono
             var (xH, yH) = ((int[])hx0.Clone(), (int[])hy0.Clone());
 
-            // 1) ROTACIONA em torno de (xOrigem, yOrigem)
-            (xH, yH) = CalcRotacao(xH, yH, angState);
+            if (checkBoxRotacaoTransposta.Checked)
+            {
+                (xH, yH) = rotacaoTransposicaoMatriz(xH, yH, angState);
+            }
+            else
+            {
+                (xH, yH) = rotacao(xH, yH, angState);
+            }
 
-            // 2) ESCALA em torno de (xOrigem, yOrigem)
-            (xH, yH) = CalcEscala(xH, yH, sxState, syState);
-
-            // 3) TRANSLAÇÃO
-            (xH, yH) = CalcTranslacaoX(xH, yH, txState);
-            (xH, yH) = CalcTranslacaoY(xH, yH, tyState);
-
+            (xH, yH) = escala(xH, yH, sxState, syState);
+            (xH, yH) = translacaoX(xH, yH, txState);
+            (xH, yH) = translacaoY(xH, yH, tyState);
             hxState = xH; hyState = yH;
 
-            // Triângulos (mesma ordem)
-            xsState = new int[xs0.Length][];
-            ysState = new int[ys0.Length][];
+            xsState = new int[xs0.Length][]; ysState = new int[ys0.Length][];
             for (int i = 0; i < xs0.Length; i++)
             {
                 var (xT, yT) = ((int[])xs0[i].Clone(), (int[])ys0[i].Clone());
-                (xT, yT) = CalcRotacao(xT, yT, angState);
-                (xT, yT) = CalcEscala(xT, yT, sxState, syState);
-                (xT, yT) = CalcTranslacaoX(xT, yT, txState);
-                (xT, yT) = CalcTranslacaoY(xT, yT, tyState);
+                if (checkBoxRotacaoTransposta.Checked)
+                    (xT, yT) = rotacaoTransposicaoMatriz(xT, yT, angState);
+                else
+                    (xT, yT) = rotacao(xT, yT, angState);
+                (xT, yT) = escala(xT, yT, sxState, syState);
+                (xT, yT) = translacaoX(xT, yT, txState);
+                (xT, yT) = translacaoY(xT, yT, tyState);
                 xsState[i] = xT; ysState[i] = yT;
             }
         }
@@ -439,30 +388,16 @@ namespace ProjetoWagner3BIM
         {
             if (cbbox_tipo_aplicacao.SelectedIndex == 0)
             {
-                int index = cbbox_onde_aplicar.SelectedIndex;
-                Color cor = getColor();
-                if (index == 0)
-                {
-                    for (int i = 0; i < tcolor.Length; i++) tcolor[i][0] = cor;
-                }
-                else
-                {
-                    tcolor[index - 1][0] = cor;
-                }
+                int index = cbbox_onde_aplicar.SelectedIndex; Color cor = getColor();
+                if (index == 0) { for (int i = 0; i < tcolor.Length; i++) tcolor[i][0] = cor; }
+                else { tcolor[index - 1][0] = cor; }
                 panel1.Invalidate();
             }
             else if (cbbox_tipo_aplicacao.SelectedIndex == 1)
             {
-                int index = cbbox_onde_aplicar.SelectedIndex;
-                Color cor = getColor();
-                if (index == 0)
-                {
-                    for (int i = 0; i < tcolor.Length; i++) tcolor[i][1] = cor;
-                }
-                else
-                {
-                    tcolor[index - 1][1] = cor;
-                }
+                int index = cbbox_onde_aplicar.SelectedIndex; Color cor = getColor();
+                if (index == 0) { for (int i = 0; i < tcolor.Length; i++) tcolor[i][1] = cor; }
+                else { tcolor[index - 1][1] = cor; }
                 panel1.Invalidate();
             }
         }
@@ -471,26 +406,16 @@ namespace ProjetoWagner3BIM
         {
             switch (cbbox_cor.SelectedIndex)
             {
-                case 0:
-                    return Cor_primitiva(0, 0, 0);
-                case 1:
-                    return Cor_primitiva(255, 0, 0);
-                case 2:
-                    return Cor_primitiva(255, 127, 0);
-                case 3:
-                    return Cor_primitiva(255, 255, 0);
-                case 4:
-                    return Cor_primitiva(0, 255, 0);
-                case 5:
-                    return Cor_primitiva(0, 0, 255);
-                case 6:
-                    return Cor_primitiva(75, 0, 130);
-                case 7:
-                    return Cor_primitiva(148, 0, 211);
-                case 8:
-                    return Cor_primitiva(255, 255, 255);
-                default:
-                    return Cor_primitiva(0, 0, 0);
+                case 0: return Cor_primitiva(0, 0, 0);
+                case 1: return Cor_primitiva(255, 0, 0);
+                case 2: return Cor_primitiva(255, 127, 0);
+                case 3: return Cor_primitiva(255, 255, 0);
+                case 4: return Cor_primitiva(0, 255, 0);
+                case 5: return Cor_primitiva(0, 0, 255);
+                case 6: return Cor_primitiva(75, 0, 130);
+                case 7: return Cor_primitiva(148, 0, 211);
+                case 8: return Cor_primitiva(255, 255, 255);
+                default: return Cor_primitiva(0, 0, 0);
             }
         }
 
@@ -498,26 +423,16 @@ namespace ProjetoWagner3BIM
         {
             switch (index)
             {
-                case 0:
-                    return Cor_primitiva(0, 0, 0);
-                case 1:
-                    return Cor_primitiva(255, 0, 0);
-                case 2:
-                    return Cor_primitiva(255, 127, 0);
-                case 3:
-                    return Cor_primitiva(255, 255, 0);
-                case 4:
-                    return Cor_primitiva(0, 255, 0);
-                case 5:
-                    return Cor_primitiva(0, 0, 255);
-                case 6:
-                    return Cor_primitiva(75, 0, 130);
-                case 7:
-                    return Cor_primitiva(148, 0, 211);
-                case 8:
-                    return Cor_primitiva(255, 255, 255);
-                default:
-                    return Cor_primitiva(0, 0, 0);
+                case 0: return Cor_primitiva(0, 0, 0);
+                case 1: return Cor_primitiva(255, 0, 0);
+                case 2: return Cor_primitiva(255, 127, 0);
+                case 3: return Cor_primitiva(255, 255, 0);
+                case 4: return Cor_primitiva(0, 255, 0);
+                case 5: return Cor_primitiva(0, 0, 255);
+                case 6: return Cor_primitiva(75, 0, 130);
+                case 7: return Cor_primitiva(148, 0, 211);
+                case 8: return Cor_primitiva(255, 255, 255);
+                default: return Cor_primitiva(0, 0, 0);
             }
         }
 
@@ -529,8 +444,7 @@ namespace ProjetoWagner3BIM
                 for (int i = 0; i < tcolor.Length; i++)
                 {
                     int randomIndex = random.Next(0, 9);
-                    Color cor = getColor(randomIndex);
-                    tcolor[i][0] = cor;
+                    tcolor[i][0] = getColor(randomIndex);
                 }
 
                 panel1.Invalidate();
@@ -543,15 +457,13 @@ namespace ProjetoWagner3BIM
                     for (int i = 0; i < tcolor.Length; i++)
                     {
                         int randomIndex = random.Next(0, 9);
-                        Color cor = getColor(randomIndex);
-                        tcolor[i][1] = cor;
+                        tcolor[i][1] = getColor(randomIndex);
                     }
                 }
                 else
                 {
                     int randomIndex = random.Next(0, 9);
-                    Color cor = getColor(randomIndex);
-                    tcolor[index - 1][1] = cor;
+                    tcolor[index - 1][1] = getColor(randomIndex);
                 }
                 panel1.Invalidate();
             }
@@ -566,19 +478,18 @@ namespace ProjetoWagner3BIM
             trackBarY.Value = 346;
             trackBarRotacao.Value = 0;
             trackBarEscala.Value = 1;
-            for (int i = 0; i < tcolor.Length; i++)
-            {
-                tcolor[i][0] = Color.FromArgb(0, 0, 0);
-                tcolor[i][1] = Color.FromArgb(255, 255, 255);
-            }
+            angState = 0;
+            for (int i = 0; i < tcolor.Length; i++) { tcolor[i][0] = Color.FromArgb(0, 0, 0); tcolor[i][1] = Color.FromArgb(255, 255, 255); }
             panel1.Invalidate();
         }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
-            angState = (angState + 10) % 360;
+            if (checkBoxRotacaoTransposta.Checked)
+                angState = (angState + 1) % 4;
+            else
+                angState = (angState + 10) % 360;
             trackBarRotacao.Value = angState;
-            rotation = true;
-            RecalcularEstado();
             panel1.Invalidate();
         }
 
@@ -589,7 +500,62 @@ namespace ProjetoWagner3BIM
 
         private void checkBoxRotacaoTransposta_CheckedChanged(object sender, EventArgs e)
         {
+            if (checkBoxRotacaoTransposta.Checked)
+            {
+                trackBarRotacao.Minimum = 0;
+                trackBarRotacao.Maximum = 3;
+                angState = 0;
+                trackBarRotacao.Value = 0;
+            }
+            else
+            {
+                trackBarRotacao.Minimum = 0;
+                trackBarRotacao.Maximum = 360;
+                angState = 0;
+                trackBarRotacao.Value = 0;
+            }
+            panel1.Invalidate();
+        }
 
+        private bool PontoDentroTriangulo(Point p, Point a, Point b, Point c)
+        {
+            float Area(Point p1, Point p2, Point p3)
+            {
+                return Math.Abs((p1.X * (p2.Y - p3.Y) +
+                                 p2.X * (p3.Y - p1.Y) +
+                                 p3.X * (p1.Y - p2.Y)) / 2f);
+            }
+
+            float areaABC = Area(a, b, c);
+            float areaPAB = Area(p, a, b);
+            float areaPBC = Area(p, b, c);
+            float areaPCA = Area(p, c, a);
+
+            return Math.Abs((areaPAB + areaPBC + areaPCA) - areaABC) < 0.5f;
+        }
+
+
+        private void panel1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            for (int i = 0; i < xsState.Length; i++)
+            {
+                Point a = new Point(xsState[i][0], ysState[i][0]);
+                Point b = new Point(xsState[i][1], ysState[i][1]);
+                Point c = new Point(xsState[i][2], ysState[i][2]);
+
+                if (PontoDentroTriangulo(e.Location, a, b, c))
+                {
+                    Color cor = getColor(cbbox_cor.SelectedIndex);
+
+                    if (cbbox_tipo_aplicacao.SelectedIndex == 0)
+                        tcolor[i][0] = cor;
+                    else
+                        tcolor[i][1] = cor;
+
+                    panel1.Invalidate();
+                    return;
+                }
+            }
         }
     }
 }
